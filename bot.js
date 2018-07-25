@@ -13,7 +13,7 @@ client.on('ready', () => {
     console.log('I am ready!');
 });
 client.on('ready', () => {
-  client.user.setGame('SY.','https://www.twitch.tv/peery13');
+  client.user.setGame('1help Gaming Lounge');
 });
 client.on('ready', function() {
     console.log(`i am ready ${client.user.username}`);
