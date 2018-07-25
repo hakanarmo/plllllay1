@@ -304,4 +304,4 @@ m.createChannel('📝 - | text channels', 'voice');
 
 
 
-client.login(process.env.BOT_TOKEN);
+LOka.login(process.env.BOT_TOKEN);
