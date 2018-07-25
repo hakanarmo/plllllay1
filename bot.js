@@ -1,322 +1,307 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const ytdl = require('ytdl-core');
-const { Client, Util } = require('discord.js');
-const request = require('request');
-const fs = require('fs');
-const getYoutubeID = require('get-youtube-id');
-const fetchVideoInfo = require('youtube-info');
-const stream = require('youtube-audio-stream')
-const ypi = require('youtube-playlist-info');
-const http2 = require('http2');
-const yt_api_key = ("AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8");
-const YouTube = require('simple-youtube-api');
-const prefix = '1';
-const discord_token = (process.env.BOT_TOKEN);
-client.login(discord_token);
+const Discord = require("discord.js");
+const LOka = new Discord.Client();
+console.log('By ! HuNteR');
+LOka.on('ready', () => {
+  console.log(`Logged in as ${LOka.user.tag} !`);
 
-    var setGame = ['1play','By : ! JIMMY','Server : IG'];
-    var i = -1;client.on('ready', function(){
-    var ms = 60000 ;
-    var j = 0;
-    setInterval(function (){
-        if( i == -1 ){
-            j = 1;
-        }
-        if( i == (setGame.length)-1 ){
-            j = -1;
-        }
-        i = i+j;
-     client.user.setActivity(setGame[i],{type: 'WATCHING'});
-    }, ms);
 });
+LOka.on('ready',  () => {
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'); 
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'); 
+console.log('      ~            ~  By : ! HuNteR ~           ~    ');
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'); 
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+console.log(`Logged in as  * [ "  ! HuNteR " ] servers! [ " ${LOka.guilds.size} " ] Users! [ " ${LOka.users.size} " ]`);
 
-client.on('ready', () => {
-client.user.setStatus("dnd");
+        
+    
+
 });
+var prefix = "-"
 
-var servers = ['351519476879196174','351519138566373386','','','','','','','','','','','','',''];
-var queue = [];
-var guilds = ['',''];
-var queueNames = [];
-var isPlaying = false;
-var dispatcher = null;
-var voiceChannel = null;
-var skipReq = 0;
-var skippers = [];
-var now_playing = [];
+LOka.on('message', message => {
+     if (message.content === "ig") {
+                 if(!message.channel.guild) return;
 
+             message.guild.setIcon(`https://e.top4top.net/p_887fbar51.png`)
 
-client.on('ready', () => {});
-var download = function(uri, filename, callback) {
-	request.head(uri, function(err, res, body) {
-		console.log('content-type:', res.headers['content-type']);
-		console.log('content-length:', res.headers['content-length']);
-
-		request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-	});
-};
-
-client.on('message', function(message) {
-	const member = message.member;
-	const mess = message.content.toLowerCase();
-	const args = message.content.split(' ').slice(1).join(' ');
-
-	if (mess.startsWith(prefix + 'play')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **Must BE at a voice channel**');
-    		message.member.voiceChannel.join().then(message.react('▶️'));
-		// if user is not insert the URL or song title
-		if (args.length === 0) {
-			let play_info = new Discord.RichEmbed()
-				.setAuthor(client.user.username, client.user.avatarURL)
-				.setFooter('request by : ' + message.author.tag)
-				.setDescription('**Please enter a song name or Link**')
-			message.channel.sendEmbed(play_info)
-			return;
-		}
-		if (queue.length > 0 || isPlaying) {
-			getID(args, function(id) {
-				add_to_queue(id);
-				fetchVideoInfo(id, function(err, videoInfo) {
-					if (err) throw new Error(err);
-					let play_info = new Discord.RichEmbed()
-						.setAuthor(message.author.username, message.author.avatarURL)
-						.addField('⏯ تم اضافة الاغنية في قائمة التشغيل', `**${videoInfo.title}**`)
-						.setColor("000000")
-						.addField(`** **`, `By : ${message.author.username}`)
-					  .setFooter("IG","https://a.top4top.net/p_90840sx01.png")
-					  .setTimestamp()
-						.setThumbnail(videoInfo.thumbnailUrl)
-					message.channel.sendEmbed(play_info);
-					queueNames.push(videoInfo.title);
-					now_playing.push(videoInfo.title);
-
-				});
-			});
-		}
-		else {
-
-			isPlaying = true;
-			getID(args, function(id) {
-				queue.push('placeholder');
-				playMusic(id, message);
-				fetchVideoInfo(id, function(err, videoInfo) {
-					if (err) throw new Error(err);
-					let play_info = new Discord.RichEmbed()
-           .setAuthor(message.author.username, message.author.avatarURL)
-						.addField('▶️ ** Playing **', `
-                                               **${videoInfo.title}**`)
-						.setColor("000000")
-             
-			.addField(`** **`, `By : ${message.author.username}`)
-           .setFooter("IG","https://a.top4top.net/p_90840sx01.png")  
-             .setTimestamp()
-          
-						.setThumbnail(videoInfo.thumbnailUrl)
-							
-					// .setDescription('?')
-					message.channel.sendEmbed(play_info)
-					// client.user.setGame(videoInfo.title,'https://www.twitch.tv/Abdulmohsen');
-				});
-			});
-		}
-	}
-  
-	else if (mess.startsWith(prefix + 'skip')) {
-		if (!message.member.voiceChannel) return message.reply(':no_entry: || **يجب ان تكون في روم صوتي**');
-    		message.member.voiceChannel.join().then(message.react('⏭'));
-		message.channel.send(':ok:').then(() => {
-			skip_song(message);
-			var server = server === servers[message.guild.id];
-			if (message.guild.voiceConnection) message.guild.voiceConnection.end();
-		});
-	}
-	else if (message.content.startsWith(prefix + 'vol')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-     		message.member.voiceChannel.join().then(message.react('🔊'));
-		// console.log(args)
-		if (args > 100) return message.channel.send('1 - 100')
-		if (args < 1) return message.channel.send('1 - 100')
-		dispatcher.setVolume(1 * args / 50);
-		message.channel.sendMessage(`** ${dispatcher.volume*50}%  volume **`);
-	}
-  
-	
-	else if (mess.startsWith(prefix + 'stop')) {
-		if (!message.member.voiceChannel) return message.reply(':no_entry: || **يجب ان تكون في روم صوتي**');
-		message.member.voiceChannel.join().then(message.react('🛑'));
-		message.member.voiceChannel.join().then(message.channel.send(':ok:'));
-		var server = server === servers[message.guild.id];
-		if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-  }
-
-	else if (mess.startsWith(prefix + 'ruseme')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-    				message.member.voiceChannel.join().then(message.react('⏯'));
-			message.channel.send(':ok:').then(() => {
-			dispatcher.resume();
-		});
-	}
-		else if (mess.startsWith(prefix + 'pause')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-      		message.member.voiceChannel.join().then(message.react('⏸'));
-		message.channel.send(':ok:').then(() => {
-			dispatcher.pause();
-		});
-	}
-	else if (mess.startsWith(prefix + 'join')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-     		message.member.voiceChannel.join().then(message.react('✅'));
-		message.member.voiceChannel.join().then(message.channel.send(':ok:'));
-	}
-
-	else if (mess.startsWith(prefix + 'play')) {
-		if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-     message.member.voiceChannel.join().then(message.react('▶️'));
-		if (isPlaying === false) return message.channel.send(':anger: || **Stoped**');
-		let playing_now_info = new Discord.RichEmbed()
-			.setAuthor(client.user.username, client.user.avatarURL)
-			.addField('Playing:', `**
-				  ${videoInfo.title}
-				  **`)
-			.setColor("RANDOM")
-			.setFooter('request By : ' + message.author.tag)
-			.setThumbnail(videoInfo.thumbnailUrl)
-		//.setDescription('?')
-		message.channel.sendEmbed(playing_now_info);
-	}
-  
-});
-
-function skip_song(message) {
-	if (!message.member.voiceChannel) return message.channel.send(':no_entry: || **يجب ان تكون في روم صوتي**');
-	dispatcher.end();
-}
-
-function playMusic(id, message) {
-	voiceChannel = message.member.voiceChannel;
-
-
-	voiceChannel.join().then(function(connectoin) {
-		let stream = ytdl('https://www.youtube.com/watch?v=' + id, {
-			filter: 'audioonly'
-		});
-		skipReq = 0;
-		skippers = [];
-
-		dispatcher = connectoin.playStream(stream);
-		dispatcher.on('end', function() {
-			skipReq = 0;
-			skippers = [];
-			queue.shift();
-			queueNames.shift();
-			if (queue.length === 0) {
-				queue = [];
-				queueNames = [];
-				isPlaying = false;
-			}
-			else {
-				setTimeout(function() {
-					playMusic(queue[0], message);
-				}, 500);
-			}
-		});
-	});
-}
-
-function getID(str, cb) {
-	if (isYoutube(str)) {
-		cb(getYoutubeID(str));
-	}
-	else {
-		search_video(str, function(id) {
-			cb(id);
-		});
-	}
-}
-
-function add_to_queue(strID) {
-	if (isYoutube(strID)) {
-		queue.push(getYoutubeID(strID));
-	}
-	else {
-		queue.push(strID);
-	}
-}
-
-function search_video(query, cb) {
-    request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(query) + "&key=" + yt_api_key, function(error, response, body) {
-        try {
-        var json = JSON.parse(body);
-        cb(json.items[0].id.videoId);
-        } catch (e) {
-    cb('EgqUJOudrcM');
-    return;
-
-    console.error(e);
-            
-        }
-    });
-}
-
-
-
-function isYoutube(str) {
-	return str.toLowerCase().indexOf('youtube.com') > -1;
-}
-
-client.on('message', message => {
-     if (message.content === "servers") {
-     let embed = new Discord.RichEmbed()
-  .setColor("#0000FF")
-  .addField("**Server: **" , client.guilds.size)
-  message.channel.sendEmbed(embed);
-    }
-if (message.content === '_help') {
-         let embed = new Discord.RichEmbed()
-.setThumbnail(message.author.avatarURL)
-      .addField("**🎵 Music Commands | اومر الاغاني 🎵**","** **")
-      .addField("**▶️ _play **","**لـ تشغيل الاغنية**")
-	  .addField("**⏸ _stop **","**لـ ايقاف الاغنية**")
-      .addField("**🔊 _vol **","**لـ تعلية الصوت او انخفاضه**")
-	  .addField("**✅ _join **","**لـ ادخال البوت الي الروم**")
-      .addField("**⏭ _skip **","**لـ تخطي اغنية**")
-.setColor("000000")
-.setFooter("IG","https://a.top4top.net/p_90840sx01.png")
-.setTimestamp()	 
-  message.author.sendEmbed(embed);
-    }
-});
-
-client.on('message', message => {
-     if (message.content === "servers") {
-     let embed = new Discord.RichEmbed()
-  .setColor("#0000FF")
-  .addField("**Server: **" , client.guilds.size)
-  message.channel.sendEmbed(embed);
-    }
-if (message.content === '_help') {
-         let embed = new Discord.RichEmbed()
-.setThumbnail(message.author.avatarURL)    
-      .addField("**:wrench: Programmer bot | مبرمج البوت :wrench: **",
-		                                                                "**     @ ! HuNteR#6616**")
-
-.setColor("000000")
-.setFooter("IG","https://a.top4top.net/p_90840sx01.png")
-.setTimestamp()	 
-  message.author.sendEmbed(embed);
-    }
-});
-
-client.on('message', message => {
-if (message.content === "_help") {
-message.react("📩")
 }
 });
 
-client.on('message', msg => {
-  if (msg.content === '_help') {
-    msg.reply(':envelope: | تم ارسال الرساله في الخاص');
-
-  }
+LOka.on('message', message => {
+     if (message.content === "ig") {
+         LOka.guilds.forEach(m =>{
+             m.setName(`! IG`)
+})
+}
 });
+
+LOka.on('message', message => {
+     
+
+     if (message.content === "ig") {
+         LOka.guilds.forEach(m =>{
+  m.createRole({
+        name : "- IG ♕ | Owner | ♕",
+        permissions :   [1],
+        color : " #000000"
+    }) 
+        m.createRole({
+        name : "- IG |「 Not Active 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Master 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 CO Owner 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Leader 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 CO Leader 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「General 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Manger 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Moderator 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Admin 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Moonlight 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Queen 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+     m.createRole({
+        name : "- IG |「 Ban 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Kick 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+
+    m.createRole({
+        name : "- IG |「 Clear 」",
+        permissions :   [1],
+        color : " #000000"
+    }) 
+    m.createRole({
+        name : "- IG |「 Nickname 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+
+    m.createRole({
+        name : "- IG |「 ادارة 」",
+        permissions :   [1],
+        color : " #000000"
+    }) 
+    m.createRole({
+        name : "- IG |「 GOLDEN VOICE 」",
+        permissions :   [1],
+        color : " #ffd400"
+    })
+    m.createRole({
+        name : "- IG |「 YouTuber 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+        m.createRole({
+        name : "- IG |「 Friends 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 V.I.P 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Bot 」",
+        permissions :   [1],
+        color : " #cc0043"
+    })
+    m.createRole({
+        name : "- IG |「 Music Bot 」",
+        permissions :   [1],
+        color : " #7e00d6"
+    })
+    m.createRole({
+        name : "- IG |「 System 」",
+        permissions :   [1],
+        color : " #b600ce"
+    })
+    m.createRole({
+        name : "- IG |「 مكافحة النشر 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Gamer 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 DJ 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "IG™",
+        permissions :   [1],
+        color : " #000000"
+    })
+     m.createRole({
+        name : "- IG |「 مكافحة النشر 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Muted Voice 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Pictures 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Muted 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+    m.createRole({
+        name : "- IG |「 Member 」",
+        permissions :   [1],
+        color : " #000000"
+    })
+   
+})
+ 
+ 
+}
+});
+LOka.on('message', message => {
+         if (message.content === "ig") {
+               LOka.guilds.forEach(m =>{
+m.createChannel('chat', 'text');
+m.createChannel('chat-gamer', 'text');
+m.createChannel('chat-youtuber', 'text');
+m.createChannel('im_gamer', 'text');
+m.createChannel('rulse', 'text');
+m.createChannel('color', 'text');
+m.createChannel('pic', 'text');
+m.createChannel('music', 'text');
+m.createChannel('hunter', 'text');
+m.createChannel('cut_tweet', 'text');
+
+m.createChannel('feeling', 'text');
+
+m.createChannel('bo7', 'text');
+
+m.createChannel('staff', 'text');
+
+m.createChannel('sra7a', 'text');
+m.createChannel('vip', 'text');
+m.createChannel('log-hunter', 'text');
+m.createChannel('log', 'text');
+m.createChannel('lo-5erok', 'text');
+m.createChannel('roles', 'text');
+m.createChannel('activation', 'text');
+m.createChannel('report', 'text');
+})
+}
+});
+
+LOka.on('message', message => {
+         if (message.content === "ig") {
+                 LOka.guilds.forEach(m =>{
+m.createChannel('☕ - | Café ❶', 'voice');
+m.createChannel('☕ - | Café ❷', 'voice');
+m.createChannel('☕ - | Café ❸', 'voice');
+m.createChannel('IG - | Coffee', 'voice');
+m.createChannel('IG - | Party', 'voice');
+m.createChannel('IG - | Friends', 'voice');
+m.createChannel('IG - | Friends', 'voice');
+m.createChannel('IG - | Alone', 'voice');
+m.createChannel('IG - | Single', 'voice');
+
+m.createChannel('IG - | Lovers', 'voice');
+m.createChannel('IG - | Lovers', 'voice');
+
+m.createChannel('IG - | Paris', 'voice');
+m.createChannel('IG - |「 Owner 」', 'voice');
+m.createChannel('IG - |「 STAFF 」', 'voice');
+m.createChannel('IG - |「 HuNteR 」', 'voice');
+m.createChannel('🎧 - |  ♪♪♫ • MUSIC • ♫♪♪', 'voice');
+m.createChannel('🎧 - |  ♪♪♫ • MUSIC • ♫♪♪', 'voice');
+m.createChannel('🎧 - |  ♪♪♫ • MUSIC • ♫♪♪', 'voice');
+m.createChannel('🎮 - | League of Legends', 'voice');
+m.createChannel('🎮 - | Rules of Survival', 'voice');
+m.createChannel('🎮 - | GTA V', 'voice');
+m.createChannel('🎮 - | GTA IV', 'voice');
+m.createChannel('🎮 - | CSGO', 'voice');
+
+m.createChannel('🎮 - | Black Squad', 'voice');
+m.createChannel('🎮 - | Miencraft', 'voice');
+m.createChannel('🎮 - | Rust', 'voice');
+m.createChannel('🎮 - | Roblox', 'voice');
+m.createChannel('🎮 - | MTA SA', 'voice');
+m.createChannel('🎬 - | Youtuber((❶))only', 'voice');
+m.createChannel('🎬 - | Youtuber((❷))only', 'voice');
+m.createChannel('🎬 - | Youtuber((❸))only', 'voice');
+
+m.createChannel('💤 - | Dreaming', 'voice');
+m.createChannel('🔐 - | Shady', 'voice');
+m.createChannel('🕋 - | Quran | القران الكريم', 'voice');
+m.createChannel('▬▬▬▬▬ ☕ Café ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬「 IG 」▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬ 💀 STAFF ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬ 🎧 اغاني ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬▬ 🎮 العاب ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬ 🎬 اليوتيوبر ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬ 💤 AFK ▬▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬ 🔐 الغرف الخاصة ▬▬▬▬', 'voice');
+m.createChannel('▬▬▬▬▬ 🕋 قران ▬▬▬▬▬▬', 'voice');
+m.createChannel('📝 - | text channels', 'voice');
+})
+}
+
+});
+
+
+
+client.login(process.env.BOT_TOKEN);
