@@ -14,7 +14,7 @@ const prefix = '1';
 client.on('ready', function() {
  console.log(`Logged in as * [ " ${client.user.username} " ]`);
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'); 
-  console.log('By : Gaming Lounge');
+  console.log('By : Wizmoore');
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'); 
   console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 	
@@ -33,7 +33,7 @@ var now_playing = [];
 
 client.on('ready',  () => {
 
-client.user.setGame(`1play - Gaming Lounge`)
+client.user.setGame(`1play`,'https://www.twitch.tv/wizmoore`)
 client.user.setStatus("online");
 });
 
