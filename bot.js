@@ -9,7 +9,7 @@ const http2 = require('http2');
 
 
 const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4";
-const prefix = '1';
+const prefix = '=';
 
 client.on('ready', function() {
  console.log(`Logged in as * [ " ${client.user.username} " ]`);
@@ -33,7 +33,7 @@ var now_playing = [];
 
 client.on('ready',  () => {
 
-client.user.setGame(`1play`,'https://www.twitch.tv/!Y!`)
+client.user.setGame(`=play`,'https://www.twitch.tv/!Y!`)
 client.user.setStatus("online");
 });
 
