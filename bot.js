@@ -33,7 +33,7 @@ var now_playing = [];
 
 client.on('ready',  () => {
 
-client.user.setGame(`1play`,'https://www.twitch.tv/wizmoore`)
+client.user.setGame(`1play`,'https://www.twitch.tv/!Y!`)
 client.user.setStatus("online");
 });
 
