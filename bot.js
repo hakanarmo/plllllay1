@@ -8,12 +8,12 @@ const fetchVideoInfo = require('youtube-info');
 
 const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4";
 const prefix = '1';
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);  //اياكككك تلعب هنا لا تحط توكنك هنا
 client.on('ready', () => {
     console.log('I am ready!');
 });
 client.on('ready', () => {
-  client.user.setGame('1help Gaming Lounge');
+  client.user.setGame('1play - Gaming Lounge');
 });
 client.on('ready', function() {
     console.log(`i am ready ${client.user.username}`);
@@ -251,8 +251,6 @@ function isYoutube(str) {
      مستوى الصوت 1-100
      **${prefix}اطلع**
      خروج البوت من الروم
-
-
      prefix = ${prefix}
      ping = ${Date.now() - message.createdTimestamp}ms
      for help = <!Nadim. | SY#6666>
@@ -269,4 +267,4 @@ client.on('message', message => {
 
 
 
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);  //اياكككك تلعب هنا لا تحط توكنك هنا
