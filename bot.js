@@ -9,7 +9,7 @@ const moment = require('moment');
 
 
 var Eris = require("eris");
-let  ID = "448501199608610826";
+let  ID = "471859142617858048";
 const BT  = new Eris(process.env.BOT_TOKEN);
 BT.connect(process.env.BOT_TOKEN)
 BT.on("ready", ready => {
@@ -37,16 +37,16 @@ setInterval(function(){
             if (hours == 0) {
                 hours = 12;
             }
-BT.editChannel("448501199608610826", {name : "🌹WEL"})
-BT.editChannel("448501199608610826", {name : "🌹WELC"})
-BT.editChannel("448501199608610826", {name : "🌹WELCO"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOM"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME T"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME TO"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME TO P"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME TO PR"})
-BT.editChannel("448501199608610826", {name : "🌹WELCOME TO PRO🌹"})
+BT.editChannel("471859142617858048", {name : "🌹WEL"})
+BT.editChannel("471859142617858048", {name : "🌹WELC"})
+BT.editChannel("471859142617858048", {name : "🌹WELCO"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOM"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME T"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME TO"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME TO P"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME TO PR"})
+BT.editChannel("471859142617858048", {name : "🌹WELCOME TO PRO🌹"})
 
 
 
